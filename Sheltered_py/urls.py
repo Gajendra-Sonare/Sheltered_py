@@ -29,6 +29,7 @@ from django.conf import settings
 
 from home.tools.createpost import CreatePost
 from home.tools.mypost import Mypost 
+from home.tools.isvalid import isValid
 
 
 urlpatterns = [
@@ -38,6 +39,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('create_post/', CreatePost, name='create_post'),
     path('mypost/', Mypost, name='mypost'),
+    path('isvalid/', isValid, name='isvalid'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
