@@ -30,6 +30,8 @@ from django.conf import settings
 from home.tools.createpost import CreatePost
 from home.tools.mypost import Mypost 
 from home.tools.isvalid import isValid
+from home.tools.dashboard import Dashboard
+from home.tools.post import Post
 
 
 urlpatterns = [
@@ -40,6 +42,8 @@ urlpatterns = [
     path('create_post/', CreatePost, name='create_post'),
     path('mypost/', Mypost, name='mypost'),
     path('isvalid/', isValid, name='isvalid'),
+    path('dashboard/', Dashboard, name='dashboard'),
+    path('post/', Post, name='post'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

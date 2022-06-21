@@ -1,28 +1,30 @@
 from asyncio import exceptions
+import email
 from pickle import FALSE
 from click import password_option
 from django import http
 from django.shortcuts import render
 from django.http import HttpResponse , request, JsonResponse
 from django.db import models 
-from .models import User
 import json, requests, jwt
-from django.contrib.auth import authenticate, login
-
+from django.contrib.auth import authenticate, login 
+from django.contrib.auth.models import User
 
 # Create your views here.
 
 SECRET_KEY = 'django-insecure-62v%tmc%)l1hwv8y^jcyg9hi+92%j49%dpbe4hntsagi(=m89p'
 
 class createAccount(models.Model):
-    def __init__(self, username, name, password):
+    def __init__(self, username, name, password, email):
         self.username = username
         self.name = name
         self.password = password
+        self.email = email 
 
     def registerAccount(self):
         try:
-            user = User(username=self.username, name=self.name, password=self.password)
+            user = User.objects.create(username=self.username, email = self.email)
+            user.set_password(self.password)
             user.save()
             return 1 
         except Exception as e:
@@ -37,7 +39,8 @@ def mainpage(request):
             username = data["username"]
             name = data["name"]
             password = data["password"]
-            user = createAccount(username, name, password)
+            email = data["email"]
+            user = createAccount(username, name, password, email)
             if user.registerAccount():
                 return HttpResponse("Account created")
             else:
@@ -46,12 +49,11 @@ def mainpage(request):
         elif data["action"] == "login":
             username = data["username"]
             password = data["password"] 
-            print(username, password)
             try:
-                user = User.objects.get(username=str(username))
-                if user.password == password: 
-                    print(user.password)
-                    jwt_data = requests.post('http://localhost:8000/api/token/', data={'username': user.username, 'password': user.password})
+                user = User.objects.get(username=username)
+
+                if authenticate(username=username, password=password): 
+                    jwt_data = requests.post('http://localhost:8000/api/token/', data={'username': username, 'password': password})
                     return JsonResponse(jwt_data.json(), safe=False) 
                 else:
                     return HttpResponse(status=403) 

@@ -1,4 +1,5 @@
-from home.models import User, PublicPost
+from home.models import PublicPost
+from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse
 import json, jwt
 
@@ -9,7 +10,7 @@ def Mypost(request):
         data = json.loads(request.body.decode('utf-8'))
         token = data['token']
         decoded_token = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-        user = User.objects.get(user_id = decoded_token['user_id']) 
+        user = User.objects.get(id = decoded_token['user_id']) 
 
         allpost = [] 
         post = PublicPost.objects.filter(user_id = user)

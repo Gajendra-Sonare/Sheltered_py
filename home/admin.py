@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import User, PublicPost
+from .models import PublicPost, ShelterAddress
 
 # Register your models here.
-admin.site.register(User)
+admin.site.register(ShelterAddress)
 admin.site.register(PublicPost)
