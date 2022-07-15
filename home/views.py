@@ -56,9 +56,10 @@ def mainpage(request):
                     jwt_data = requests.post('http://localhost:8000/api/token/', data={'username': username, 'password': password})
                     return JsonResponse(jwt_data.json(), safe=False) 
                 else:
-                    return HttpResponse(status=403) 
+                    return HttpResponse(status=401) 
             except Exception as e:
-                return HttpResponse(e)
+                print(e)
+                return HttpResponse(status=401)
         else:
             print("not signup or login")
             return HttpResponse("not signup or login")

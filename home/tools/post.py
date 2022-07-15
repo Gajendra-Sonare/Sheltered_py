@@ -19,9 +19,14 @@ def Post(request):
         # get the post using post_id 
         post = PublicPost.objects.get(id=post_id)
         # return post to appropriate formate
-        return JsonResponse({
-            'title': post.title,
+        data = {'title': post.title,
             'price': post.price,
             'description': post.description,
-            'image': post.image.url,
-        })
+            'image': post.image.url}
+        if post.other_image1:
+            data['other_image1'] = post.other_image1.url
+        if post.other_image2:
+            data['other_image2'] = post.other_image2.url
+        if post.other_image3:
+            data['other_image3'] = post.other_image3.url
+        return JsonResponse(data)

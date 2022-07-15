@@ -32,6 +32,7 @@ from home.tools.mypost import Mypost
 from home.tools.isvalid import isValid
 from home.tools.dashboard import Dashboard
 from home.tools.post import Post
+from home.tools.getnewtoken import getNewToken
 
 
 urlpatterns = [
@@ -44,6 +45,7 @@ urlpatterns = [
     path('isvalid/', isValid, name='isvalid'),
     path('dashboard/', Dashboard, name='dashboard'),
     path('post/', Post, name='post'),
+    path('getnewtoken/', getNewToken, name='getnewtoken'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
