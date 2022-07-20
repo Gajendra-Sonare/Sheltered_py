@@ -15,6 +15,7 @@ def Post(request):
             decoded_token = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
         except:
             # return error response if token is invalid
+            print(token)
             return JsonResponse({'error': 'Invalid token'}, status=401)
         # get the post using post_id 
         post = PublicPost.objects.get(id=post_id)

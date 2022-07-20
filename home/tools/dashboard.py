@@ -17,7 +17,6 @@ def Dashboard(request):
         for obj in post:
             # get address from the shelteraddress 
             address = ShelterAddress.objects.get(post_id = obj)
-            print('land', address.landmark)
             allpost.append([
                 obj.title,
                 obj.id,

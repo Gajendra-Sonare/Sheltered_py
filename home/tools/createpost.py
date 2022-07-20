@@ -37,6 +37,6 @@ def CreatePost(request):
             return HttpResponse("Post created")
         except Exception as e:
             print(e)
-            HttpResponse(e)
+            return HttpResponse(status=500)
 
     return HttpResponse("nothing here") 
