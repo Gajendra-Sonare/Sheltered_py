@@ -1,4 +1,5 @@
-from django.http import HttpResponse, request
+from email import message
+from django.http import HttpResponse, request, JsonResponse
 from home.models import PublicPost, ShelterAddress
 import json
 
@@ -6,8 +7,9 @@ def searchFilter(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
         pincode = data['pincode']
-        if not pincode:
-            return HttpResponse("no pincode")
+        if(not pincode.isdigit()):
+            # return 400 status code with a message 
+            return HttpResponse("Pincode should be a number", status=400)
 
         try:
             post = PublicPost.objects.filter(shelteraddress__pincode=pincode)
@@ -30,7 +32,7 @@ def searchFilter(request):
                     obj.image.url,
                 ])
             print('allpost', allpost)
-            return HttpResponse(allpost)
+            return JsonResponse(allpost, safe=False)
         except Exception as e:
             print(e)
             return HttpResponse(status=500)

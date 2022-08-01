@@ -1,4 +1,4 @@
-from home.models import User, PublicPost
+from home.models import User, PublicPost, ShelterAddress
 from django.http import HttpResponse, JsonResponse
 import json, jwt
 
@@ -19,10 +19,14 @@ def Post(request):
             return JsonResponse({'error': 'Invalid token'}, status=401)
         # get the post using post_id 
         post = PublicPost.objects.get(id=post_id)
+        address = ShelterAddress.objects.get(post_id=post)
         # return post to appropriate formate
         data = {'title': post.title,
             'price': post.price,
             'description': post.description,
+            'landmark': address.landmark,
+            'street': address.street,
+            'pincode': address.pincode,
             'image': post.image.url}
         if post.other_image1:
             data['other_image1'] = post.other_image1.url
