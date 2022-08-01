@@ -7,12 +7,14 @@ def searchFilter(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
         pincode = data['pincode']
+        page = int(data['page'])
         if(not pincode.isdigit()):
             # return 400 status code with a message 
+            print("pincode is not a digit", pincode)
             return HttpResponse("Pincode should be a number", status=400)
 
         try:
-            post = PublicPost.objects.filter(shelteraddress__pincode=pincode)
+            post = PublicPost.objects.filter(shelteraddress__pincode=pincode)[(page-1) * 4: page*4]
             allpost = [] 
             for obj in post:
                 other_image1 = obj.other_image1.url if obj.other_image1 else None
