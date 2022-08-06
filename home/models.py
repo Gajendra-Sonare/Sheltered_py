@@ -26,4 +26,12 @@ class ShelterAddress(models.Model):
 
     def __str__(self):
         return self.post_id.title
+    
+class UserProfile(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=30)
+    mobile = models.CharField(max_length=13)
+
+    def __str__(self):
+        return self.user_id.username
         

@@ -1,4 +1,4 @@
-from home.models import User, PublicPost, ShelterAddress
+from home.models import User, PublicPost, ShelterAddress, UserProfile
 from django.http import HttpResponse, JsonResponse
 import json, jwt
 
@@ -20,6 +20,7 @@ def Post(request):
         # get the post using post_id 
         post = PublicPost.objects.get(id=post_id)
         address = ShelterAddress.objects.get(post_id=post)
+        mob = UserProfile.objects.get(user_id=post.user_id).mobile
         # return post to appropriate formate
         data = {'title': post.title,
             'price': post.price,
@@ -27,7 +28,9 @@ def Post(request):
             'landmark': address.landmark,
             'street': address.street,
             'pincode': address.pincode,
-            'image': post.image.url}
+            'image': post.image.url,
+            'user_details': {'name': post.user_id.username, 'mobile': mob}
+            }
         if post.other_image1:
             data['other_image1'] = post.other_image1.url
         if post.other_image2:
